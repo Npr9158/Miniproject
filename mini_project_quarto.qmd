@@ -1,0 +1,7 @@
+---
+title: "Mini_project"
+format: html
+editor: visual
+---
+
+click\[here\](mini_project_quarto.html)
