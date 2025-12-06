@@ -4,8 +4,6 @@ format: html
 editor: visual
 ---
 
-# PSY6422 Mini-Project
-
 ## Introduction
 
 Write and introduction here

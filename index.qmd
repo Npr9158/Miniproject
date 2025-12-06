@@ -6,4 +6,4 @@ editor: visual
 
 # Link to PSY6422 Mini-Project
 
-Click [here](PSY6422_Miniproject_250197565.html) for the mini-project.
+Click [here](PSY6422_Miniproject_250197565.html) for the mini-project page.
