@@ -4,24 +4,6 @@ format: html
 editor: visual
 ---
 
-# PSY6422 Mini-Project
+# Link to PSY6422 Mini-Project
 
-## Introduction
-
-Write and introduction here
-
-## About the data
-
-Talk about where you got the data from\
-What did you do to visualize the data\
-Input the r code
-
-hgggg
-
-gghgunongon
-
-Is there a word count???
-
-ghghirtibtgih h jpe jo
-
-click [here](mini_project_quarto.html)
+Click [here](PSY6422_Miniproject_250197565.html) for the mini-project.
