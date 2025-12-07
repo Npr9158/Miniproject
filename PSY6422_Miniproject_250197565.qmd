@@ -6,10 +6,34 @@ editor: visual
 
 ## Introduction
 
-Write and introduction here
+### Data Origins
 
-## About the data
+The data set used for this mini-project was from a data paper titled [*'Data on Connection With the Natural Environment and Its Impact on Mental Health Among Allotment and Non-Allotment Owners'*](https://openpsychologydata.metajnl.com/articles/10.5334/jopd.122), by L. Haywood and J. Stiller(2024). The paper can be found on the [Journal of Open Psychology Data](https://openpsychologydata.metajnl.com/) website and the data set is available to download there.
 
-Talk about where you got the data from\
-What did you do to visualize the data\
-Input the r code
+The data was collected using an online survey from allotment and non-allotment owners with the aim of observing the relationship between well-being and engagement with activities in nature.
+
+The questionnaire had items about demographics(age, gender, nationality), and questions regarding ownership and engagement in allotment activities, including time spent in nature and the types of outdoor activities. Along with that, mental health, self-esteem, physical health, connection to nature, social identity, loneliness, social support and self-efficacy were measured. A comprehensive guide of the items and scales used in the questionnaire can be found in the data paper on the Journal of Open Psychology Data website.
+
+### Research Question 
+
+-   In plain English, a simple statement of what question(s) your visualisation will attempt to address
+
+**Data Preparation**
+
+-   Steps taken to clean the data, exclude outliers, sanity check the data range and values, create summary statistics, grouped variables, etc.
+
+-   Show the first few rows of the processed data, if possible
+
+-   Showing the code which does this where relevant
+
+**Visualisation(s)**
+
+-   Graph or graphs
+
+-   Documentation explaining any motivation (although good graph labelling is better than explanation in the accompanying text)
+
+-   Code for producing graph(s)
+
+**Summary**
+
+-   Brief thoughts on what you have learnt, what you might do next if you had more time / more data
