@@ -16,7 +16,7 @@ The questionnaire had items about demographics(age, gender, nationality), and qu
 
 (Explain why these variables were chosen in brief)
 
-### Research Question 
+### Research Question
 
 Using the data set from the above paper, this mini-project will attempt to visualize the relationship between mental health, time spent in nature, and connection to nature, and any potential differences in men and women. and attempt to answer the question — 'Does time spent in nature improve mental health?'
 
@@ -66,11 +66,33 @@ Crosschecking this with the dataframe on the environment showed that the missing
 
 While missing data here can be deleted using colSums(is.na() and drop_na(), it is not necessary here since the missing data is just a bunch of extra rows at the end of the dataframe that includes no data whatsoever. It is easier to simply avoid using it in the revised dataframe.
 
--   Show the first few rows of the processed data, if possible
+The next step is to tidy the data and create a new dataframe including only the required variables for the visualizations to answer the research question for this mini-project.
 
--   Showing the code which does this where relevantevant
+This involves creating new columns for the mean values for the Mental Health columns, Connection to Nature columns, and Self-efficacy columns. The data in the gender column will also have to be changed to 'male' and 'female' from their coded values. The column named D_hours will be used but does not require any modifications.
 
-**Visualisation(s)**
+```{r}
+#Create the revised dataframe as an object
+revdata <- rawdata %>% 
+  mutate( #create new columns with the mean values from the MH, Nat, SEff columns
+    mean_mh = rowMeans(across(.cols = starts_with("MH"))),
+    mean_nat = rowMeans(across(.cols = starts_with("Nat"))),
+    mean_seff = rowMeans(across(.cols = starts_with("SEff"))),
+    #change numberical values to factors in the gender column 
+    #check the codebook and use the correct values; 1=Man, 2=Women
+    Gender = factor(D_Gender, levels = c(1,2), labels = c("Men", "Women"))
+    ) %>% 
+  #Select only the required columns for the revised dataframe
+  select (c("Gender", "D_hours", "mean_mh", "mean_nat", "mean_seff")) 
+
+
+#New dataframe should be visible in environment now
+#Check if the changes have been made correctly
+head(revdata)
+
+  
+```
+
+Visualizations
 
 -   Graph or graphs
 

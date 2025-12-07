@@ -269,11 +269,39 @@ $ SEff_5       &lt;dbl&gt; 2, 4, 2, 3, 3, 3, 3, 2, 2, 1, 2, 4, 2, 3, 3, 3, 3, 2,
 </div>
 <p>Crosschecking this with the dataframe on the environment showed that the missing data is not the work of missing observations or information in the dataframe, but just empty rows at the bottom.</p>
 <p>While missing data here can be deleted using colSums(is.na() and drop_na(), it is not necessary here since the missing data is just a bunch of extra rows at the end of the dataframe that includes no data whatsoever. It is easier to simply avoid using it in the revised dataframe.</p>
-<ul>
-<li><p>Show the first few rows of the processed data, if possible</p></li>
-<li><p>Showing the code which does this where relevantevant</p></li>
-</ul>
-<p><strong>Visualisation(s)</strong></p>
+<p>The next step is to tidy the data and create a new dataframe including only the required variables for the visualizations to answer the research question for this mini-project.</p>
+<p>This involves creating new columns for the mean values for the Mental Health columns, Connection to Nature columns, and Self-efficacy columns. The data in the gender column will also have to be changed to ‘male’ and ‘female’ from their coded values. The column named D_hours will be used but does not require any modifications.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create the revised dataframe as an object</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>revdata <span class="ot">&lt;-</span> rawdata <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="co">#create new columns with the mean values from the MH, Nat, SEff columns</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mh =</span> <span class="fu">rowMeans</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">starts_with</span>(<span class="st">"MH"</span>))),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_nat =</span> <span class="fu">rowMeans</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">starts_with</span>(<span class="st">"Nat"</span>))),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_seff =</span> <span class="fu">rowMeans</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">starts_with</span>(<span class="st">"SEff"</span>))),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change numberical values to factors in the gender column </span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">#check the codebook and use the correct values; 1=Man, 2=Women</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Gender =</span> <span class="fu">factor</span>(D_Gender, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Men"</span>, <span class="st">"Women"</span>))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Select only the required columns for the revised dataframe</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span> (<span class="fu">c</span>(<span class="st">"Gender"</span>, <span class="st">"D_hours"</span>, <span class="st">"mean_mh"</span>, <span class="st">"mean_nat"</span>, <span class="st">"mean_seff"</span>)) </span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co">#New dataframe should be visible in environment now</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Check if the changes have been made correctly</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(revdata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  Gender D_hours mean_mh mean_nat mean_seff
+  &lt;fct&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 Women        5    3.86     5          2.4
+2 Men         12    4        4.5        3.8
+3 Women        6    4        4          3  
+4 Women       20    4.14     5          3.8
+5 Women       10    3.71     5          2.8
+6 Women        6    4        3.83       3.4</code></pre>
+</div>
+</div>
+<p>Visualizations</p>
 <ul>
 <li><p>Graph or graphs</p></li>
 <li><p>Documentation explaining any motivation (although good graph labelling is better than explanation in the accompanying text)</p></li>
