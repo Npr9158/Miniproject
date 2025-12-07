@@ -115,7 +115,7 @@ library(plotly)
 #Create the graph as an object 
 p_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
   geom_point(alpha = 0.8) + #alpha value can be changed to adjust the opaqueness of the points
-  geom_smooth(method = "lm", se = TRUE, color = "red", linewidth = 0.6)+
+  geom_smooth(method = "lm", se = TRUE, color = "magenta", linewidth = 0.6)+
   #method draws a line to show correlation, se stands for standard deviation
   #lm is for a linear model to show a correlation
   labs(x = "Mean Mental Health Score",
@@ -123,6 +123,7 @@ p_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_na
        color = "Connection to Nature",
        title = "Mental Health and Nature Exposure")+
   facet_wrap( ~ Gender)+ #makes columns seperated by gender
+  scale_color_viridis_c(option = "cividis")+ #cividis to make it color-blind friendly and accessible
   theme_bw()
 #To see the graph
 p_scatter
@@ -153,12 +154,13 @@ revdata <- rawdata %>%
 #Running the scatterplot again
 p_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
   geom_point(alpha = 0.8) + 
-  geom_smooth(method = "lm", se = TRUE, color = "red", linewidth = 0.6)+
+  geom_smooth(method = "lm", se = TRUE, color = "black", linewidth = 0.6)+
   labs(x = "Mean Mental Health Score",
        y = "Hours spent in Nature per week",
        color = "Connection to Nature",
        title = "Mental Health and Nature Exposure")+
   facet_wrap( ~ Gender)+ 
+  scale_color_viridis_c(option = "cividis")+
   theme_bw()
 
 p_scatter
@@ -168,6 +170,8 @@ ggplotly(p_scatter)
 ```
 
 \>\>\>\>\>\>\>Animate the graph
+
+### Final Visualization
 
 **Summary**
 
