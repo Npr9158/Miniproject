@@ -66,23 +66,26 @@ Crosschecking with the dataframe in the environment showed that most of the miss
 
 The next step is to tidy the data and create a new dataframe removing the missing data points and including only the required variables for the visualizations to answer the research question for this mini-project.
 
-This involves creating new columns for the mean values for the Mental Health columns, Connection to Nature columns, and Self-efficacy columns. The data in the gender column will also have to be changed to 'male' and 'female' from their coded values. The column named D_hours will be used but does not require any modifications.
+This involves creating new columns for the mean values for the Mental Health columns, Connection to Nature columns, and Self-efficacy columns. While the individual scales used in the questionnaire calculate the scores by adding the self-reported scores across the items, this project will be calculating the mean scores instead as the individual scales have different score ranges. Using the mean scores for the scales will ensure uniformity, allowing for a more accurate visualization.
+
+The data in the gender column will also have to be changed to 'male' and 'female' from their coded values. The column named D_hours will be used but does not require any modifications.
 
 ```{r}
 #Create the revised dataframe as an object
 revdata <- rawdata %>% 
+   #to ignore any rows with missing values
+  drop_na() %>%
   mutate( #create new columns with the mean values from the MH, Nat, SEff columns
     mean_mh = rowMeans(across(.cols = starts_with("MH")), na.rm = TRUE),
     mean_nat = rowMeans(across(.cols = starts_with("Nat")), na.rm = TRUE),
-    mean_seff = rowMeans(across(.cols = starts_with("SEff")), na.rm = TRUE),
     #change numberical values to factors in the gender column 
     #check the codebook and use the correct values; 1=Man, 2=Women
-    Gender = factor(D_Gender, levels = c(1,2), labels = c("Men", "Women"))
+    Gender = factor(D_Gender, levels = c(1,2), labels = c("Men", "Women")),
+    Group = factor(D_group, levels = c(1,2), labels = c("Allotment Owners", "Non-Allotment owners"))
     ) %>% 
   #Select only the required columns for the revised dataframe
-  select (c("Gender", "D_hours", "mean_mh", "mean_nat", "mean_seff")) %>%
-  #to ignore any rows with missing values
-  drop_na() 
+  select (c("Gender", "Group", "D_hours", "mean_mh", "mean_nat"))
+ 
 
 
 #New dataframe should be visible in environment now
@@ -106,65 +109,113 @@ Start with loading the necessary packages to do this.
 library(ggplot2)
 library(plotly)
 
-#Create the graph as an object 
-p_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
+#Create the scatterplot as an object 
+base_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
   geom_point(alpha = 0.8) + #alpha value can be changed to adjust the opaqueness of the points
-  geom_smooth(method = "lm", se = TRUE, color = "magenta", linewidth = 0.6)+
+  geom_smooth(method = "lm", se = TRUE, color = "black", linewidth = 0.6)+
   #method draws a line to show correlation, se stands for standard deviation
   #lm is for a linear model to show a correlation
   labs(x = "Mean Mental Health Score",
        y = "Hours spent in Nature per week",
-       color = "Connection to Nature",
+       color = "Nature Connection",
        title = "Mental Health and Nature Exposure")+
-  facet_wrap( ~ Gender)+ #makes columns seperated by gender
-  scale_color_viridis_c(option = "cividis")+ #cividis to make it color-blind friendly and accessible
-  theme_bw()
+  facet_grid( Gender ~ Group)+ #makes a grid seperated by gender and group
+  scale_color_viridis_c(option = "cividis", direction = -1)+
+  #colorblind friendly color palette for continuous variables
+  #direction can be changed to 1 to flip the direction of the scale 
+  theme_light()
+
 #To see the graph
-p_scatter
+base_scatter
 
 #To make it an interactive graph
-ggplotly(p_scatter)
+ggplotly(base_scatter)
 
 ```
 
-In the above scatterplot, only two points can be seen in the NA section (the two data points are marked as non-binary in the dataframe). While the question was open-ended in the questionnaire, the codebook does not show a value the third gender was coded into. For this visualization, these two data points will be ignored since it does not seem of relevance with the data provided.
+In the above scatterplot, the NA row only contains one value, and for this visualization, the rows with NA as gender will be ignored since it does not seem of relevance with the data provided (while the question was open-ended in the questionnaire, the codebook does not show a value the third gender was coded into.
 
-To do this, the previous data code for the revised data frame must be edited, and the code for the scatterplot can be run again.
+Allotment owners and non-allotment owners seem to follow the same pattern as each other, and the focus on allotment groups will be dropped here on for this visualization.
+
+To make the necessary changes, the previous data code for the revised data frame must be edited, and the code for the scatterplot can be run again.
 
 ```{r}
-revdata <- rawdata %>% 
-  mutate( 
-    mean_mh = rowMeans(across(.cols = starts_with("MH")), na.rm = TRUE),
-    mean_nat = rowMeans(across(.cols = starts_with("Nat")), na.rm = TRUE),
-    mean_seff = rowMeans(across(.cols = starts_with("SEff")), na.rm = TRUE),
-    Gender = factor(D_Gender, levels = c(1,2), labels = c("Men", "Women"))
-    ) %>% 
-  #Select only the required columns for the revised dataframe
-  select (c("Gender", "D_hours", "mean_mh", "mean_nat", "mean_seff")) %>% 
-  drop_na()%>% 
+#Use filter to show only "Men" and "Women" in revdata
+revdata <- revdata %>% 
   filter(Gender == "Men" | Gender == "Women")
-#this last step will filter and show only "Men" and "Women in the revdata 
-
+#Can check the change in number of rows to make sure using glimpse(revdata) 
 
 #Running the scatterplot again
-p_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
+base_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
   geom_point(alpha = 0.8) + 
-  geom_smooth(method = "lm", se = TRUE, color = "black", linewidth = 0.6)+
+  geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.6)+
   labs(x = "Mean Mental Health Score",
        y = "Hours spent in Nature per week",
-       color = "Connection to Nature",
+       color = "Nature Connection",
        title = "Mental Health and Nature Exposure")+
-  facet_wrap( ~ Gender)+ 
-  scale_color_viridis_c(option = "cividis")+
-  theme_bw()
+  facet_wrap( ~ Gender)+ #since a grid is not required' will only show gender
+  scale_color_viridis_c(option = "cividis", direction = -1)+
+  theme_light()
 
-p_scatter
-ggplotly(p_scatter)
-
+base_scatter
+ggplotly(base_scatter)
 
 ```
 
-\>\>\>\>\>\>\>Animate the graph
+The last few steps will be to create a custom, accessible theme for the scatterplot to make it more visually appealing. And as a final touch, gender will be shown in an animated graph.
+
+```{r}
+#Adjusted code for scatterplot without facet_wrap(~Gender)
+base_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
+  geom_point(alpha = 0.8) + 
+  geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.6)+
+  labs(x = "Mean Mental Health Score",
+       y = "Hours spent in Nature per week",
+       color = "Nature Connection",
+       title = "Mental Health and Nature Exposure")+
+    scale_color_viridis_c(option = "cividis", direction = -1)+
+  theme_light()
+base_scatter
+
+#Create a custom theme as a function
+theme_mod01 <- function(){
+  theme_minimal() +
+    theme (
+  legend.position = "bottom", #adjusts legend orientation
+  plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+  axis.title = element_text(size = 14),#formats text for plot and axis titles
+  panel.grid.minor = element_blank()#leaves out minor grid lines
+  )#adds color for plot background
+}
+
+#Add the custom theme to the scatterplot
+p_scatter <- base_scatter + theme_mod01()
+
+#Add animation to the graph
+#Aim : show the two genders one at a time
+#Install necessary packages in console
+#Code for gganimate--> install.packages("gganimate") 
+#Code for gifski--> install.packages("gifski")
+library(gganimate)
+library(gifski)
+
+#Animation requirements
+anim_scatter <- p_scatter + 
+  transition_states(Gender,#the categorical variable the transition is done on
+                    transition_length = 2,#speed of transition
+                    state_length = 10)+#screentime for each category
+  labs(title = "Mental Health and Nature Exposure",
+       subtitle = "Showing {closest_state}")
+
+
+#Animate the final scatterplot
+final_animscatter <- animate(anim_scatter, renderer = gifski_renderer())
+
+#Save the animated graph as gif
+anim_save("miniproject_animated_graph.gif", animation = final_animscatter)
+
+
+```
 
 ### Final Visualization 
 
