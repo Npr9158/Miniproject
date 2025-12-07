@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -71,17 +106,172 @@ ul.task-list li input[type="checkbox"] {
 <p>The data set used for this mini-project was from a data paper titled <a href="https://openpsychologydata.metajnl.com/articles/10.5334/jopd.122"><em>‘Data on Connection With the Natural Environment and Its Impact on Mental Health Among Allotment and Non-Allotment Owners’</em></a>, by L. Haywood and J. Stiller(2024). The paper can be found on the <a href="https://openpsychologydata.metajnl.com/">Journal of Open Psychology Data</a> website and the data set is available to download there.</p>
 <p>The data was collected using an online survey from allotment and non-allotment owners with the aim of observing the relationship between well-being and engagement with activities in nature.</p>
 <p>The questionnaire had items about demographics(age, gender, nationality), and questions regarding ownership and engagement in allotment activities, including time spent in nature and the types of outdoor activities. Along with that, mental health, self-esteem, physical health, connection to nature, social identity, loneliness, social support and self-efficacy were measured. A comprehensive guide of the items and scales used in the questionnaire can be found in the data paper on the Journal of Open Psychology Data website.</p>
+<p>(Explain why these variables were chosen in brief)</p>
 </section>
 <section id="research-question" class="level3">
 <h3 class="anchored" data-anchor-id="research-question">Research Question</h3>
+<p>Using the data set from the above paper, this mini-project will attempt to visualize the relationship between mental health, time spent in nature, and connection to nature, and any potential differences in men and women. and attempt to answer the question — ‘Does time spent in nature improve mental health?’</p>
+</section>
+<section id="data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="data-preparation"><strong>Data Preparation</strong></h3>
+<p>The published data set has already been cleared of errors, outliers and required items have been reverse coded. The variables and column names are also compatible and easy to work with in R.</p>
+<p>Data preparation will start with importing the data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install tidyverse in console for data wrangling</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Code--&gt; install.packages("tidyverse")</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tibble' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'purrr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'stringr' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'forcats' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lubridate' was built under R version 4.5.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.6
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.1     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.2.0     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Import dataset and create an object for easy management</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Use correct pathway as required </span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Only used csv file name here since it is already in the project folder</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>rawdata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"connection_to_nature_data.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 543 Columns: 42
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (3): D_Gender, D_Nation, D_activities
+dbl (39): D_Age, D_hours, D_allot, D_group, MH_1, MH_2, MH_3, MH_4, MH_5, MH...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<p>Check the first few rows of the raw data set.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#To check the dataframe,including number of rows and columns</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(rawdata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 543
+Columns: 42
+$ D_Age        &lt;dbl&gt; 34, 47, 56, 32, 39, 48, 44, 62, 59, 47, 51, 65, 46, 51, 5…
+$ D_Gender     &lt;chr&gt; "2", "1", "2", "2", "2", "2", "2", "1", "1", "2", "2", "2…
+$ D_Nation     &lt;chr&gt; "British", "English", "British", "British", "British", "B…
+$ D_hours      &lt;dbl&gt; 5, 12, 6, 20, 10, 6, 21, 18, 25, 10, 20, 6, 10, 12, 20, 6…
+$ D_activities &lt;chr&gt; "Walks, gardening", "Allotment", "Gardening, allotments, …
+$ D_allot      &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ D_group      &lt;dbl&gt; 2, 1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 2, 1, 2, 1, …
+$ MH_1         &lt;dbl&gt; 4, 3, 4, 4, 4, 4, 4, 4, 5, 3, 3, 2, 3, 4, 4, 4, 4, 4, 4, …
+$ MH_2         &lt;dbl&gt; 4, 4, 4, 4, 4, 5, 4, 4, 5, 4, 3, 4, 2, 4, 4, 4, 3, 4, 4, …
+$ MH_3         &lt;dbl&gt; 4, 4, 4, 4, 3, 3, 4, 4, 5, 3, 4, 3, 2, 3, 4, 4, 4, 3, 4, …
+$ MH_4         &lt;dbl&gt; 3, 4, 4, 4, 4, 4, 3, 4, 4, 4, 2, 4, 3, 4, 3, 4, 4, 5, 4, …
+$ MH_5         &lt;dbl&gt; 4, 4, 4, 4, 3, 4, 4, 3, 5, 4, 2, 4, 3, 4, 3, 4, 4, 5, 4, …
+$ MH_6         &lt;dbl&gt; 4, 4, 4, 4, 4, 3, 4, 3, 5, 3, 1, 4, 3, 4, 4, 3, 4, 4, 3, …
+$ MH_7         &lt;dbl&gt; 4, 5, 4, 5, 4, 5, 4, 4, 5, 4, 3, 3, 3, 4, 4, 5, 5, 5, 3, …
+$ SE_1         &lt;dbl&gt; 2, 4, 4, 3, 4, 3, 2, 3, 5, 3, 1, 2, 1, 3, 1, 3, 4, 4, 3, …
+$ PH_1         &lt;dbl&gt; 2, 2, 2, 3, 2, 4, 2, 4, 2, 5, 5, 2, 3, 4, 4, 2, 2, 4, 4, …
+$ PH_2         &lt;dbl&gt; 2, 1, 1, 3, 2, 4, 2, 4, 1, 5, 5, 2, 2, 4, 4, 2, 2, 4, 3, …
+$ Nat_1        &lt;dbl&gt; 5, 4, 4, 5, 5, 4, 5, 3, 4, 3, 5, 4, 5, 5, 5, 5, 3, 5, 4, …
+$ Nat_2        &lt;dbl&gt; 5, 4, 5, 5, 5, 4, 5, 4, 5, 5, 5, 4, 4, 5, 4, 4, 4, 5, 4, …
+$ Nat_3        &lt;dbl&gt; 5, 5, 5, 5, 5, 4, 5, 4, 5, 5, 5, 4, 5, 4, 4, 5, 4, 5, 4, …
+$ Nat_4        &lt;dbl&gt; 5, 5, 0, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, …
+$ Nat_5        &lt;dbl&gt; 5, 4, 5, 5, 5, 3, 5, 4, 5, 5, 5, 5, 5, 5, 4, 5, 4, 5, 4, …
+$ Nat_6        &lt;dbl&gt; 5, 5, 5, 5, 5, 4, 5, 4, 5, 5, 5, 4, 4, 5, 4, 5, 3, 5, 5, …
+$ SocID_1      &lt;dbl&gt; 4, 5, 6, 6, 5, 2, 5, 5, 6, 4, 0, 7, 6, 4, 5, 3, 6, 4, 6, …
+$ SocID_2      &lt;dbl&gt; 4, 6, 7, 6, 5, 2, 5, 5, 6, 4, 0, 6, 7, 4, 6, 0, 6, 4, 6, …
+$ SocID_3      &lt;dbl&gt; 5, 7, 6, 7, 5, 2, 5, 6, 6, 6, 0, 6, 5, 4, 6, 0, 6, 4, 6, …
+$ SocID_4      &lt;dbl&gt; 4, 5, 6, 7, 5, 1, 5, 6, 6, 3, 0, 7, 6, 4, 6, 0, 6, 4, 6, …
+$ Lon_1        &lt;dbl&gt; 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, …
+$ Lon_2        &lt;dbl&gt; 3, 1, 1, 1, 3, 2, 3, 3, 1, 3, 3, 1, 3, 1, 1, 3, 1, 2, 2, …
+$ Lon_3        &lt;dbl&gt; 1, 2, 2, 1, 3, 3, 3, 3, 2, 3, 3, 1, 1, 1, 2, 3, 1, 3, 2, …
+$ Lon_4        &lt;dbl&gt; 1, 1, 3, 3, 1, 3, 3, 2, 1, 3, 1, 2, 3, 1, 2, 3, 2, 3, 3, …
+$ Lon_5        &lt;dbl&gt; 2, 1, 1, 1, 2, 1, 2, 3, 1, 1, 3, 1, 3, 1, 3, 2, 1, 2, 2, …
+$ Lon_6        &lt;dbl&gt; 3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 3, 3, 3, …
+$ SocSup_1     &lt;dbl&gt; 4, 5, 5, 4, 4, 4, 3, 2, 7, 2, 1, 6, 3, 7, 5, 4, 5, 4, 5, …
+$ SocSup_2     &lt;dbl&gt; 4, 5, 5, 5, 3, 4, 3, 3, 6, 2, 1, 7, 2, 7, 5, 4, 6, 6, 4, …
+$ SocSup_3     &lt;dbl&gt; 4, 6, 4, 5, 7, 4, 3, 3, 6, 2, 1, 6, 2, 7, 5, 5, 5, 4, 4, …
+$ SocSup_4     &lt;dbl&gt; 4, 6, 6, 6, 5, 4, 3, 4, 6, 2, 2, 7, 2, 7, 5, 3, 4, 5, 4, …
+$ SEff_1       &lt;dbl&gt; 3, 3, 3, 4, 2, 3, 3, 3, 4, 2, 3, 3, 2, 4, 3, 3, 4, 4, 3, …
+$ SEff_2       &lt;dbl&gt; 2, 4, 3, 4, 3, 3, 2, 3, 4, 3, 2, 4, 2, 4, 4, 4, 4, 4, 3, …
+$ SEff_3       &lt;dbl&gt; 2, 4, 4, 4, 3, 4, 3, 3, 4, 2, 3, 3, 3, 4, 4, 3, 4, 3, 3, …
+$ SEff_4       &lt;dbl&gt; 3, 4, 3, 4, 3, 4, 3, 3, 4, 4, 3, 3, 2, 4, 4, 3, 4, 4, 3, …
+$ SEff_5       &lt;dbl&gt; 2, 4, 2, 3, 3, 3, 3, 2, 2, 1, 2, 4, 2, 3, 3, 3, 3, 2, 3, …</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#To see the first few rows of the dataframe as tibble use head()</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#More readable but only shows the first 6 rows </span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rawdata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 42
+  D_Age D_Gender D_Nation D_hours D_activities D_allot D_group  MH_1  MH_2  MH_3
+  &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1    34 2        British        5 Walks, gard…       1       2     4     4     4
+2    47 1        English       12 Allotment          1       1     3     4     4
+3    56 2        British        6 Gardening, …       1       2     4     4     4
+4    32 2        British       20 Countryside…       1       1     4     4     4
+5    39 2        British       10 Dog walking…       1       2     4     4     3
+6    48 2        British        6 Gardening, …       1       2     4     5     3
+# ℹ 32 more variables: MH_4 &lt;dbl&gt;, MH_5 &lt;dbl&gt;, MH_6 &lt;dbl&gt;, MH_7 &lt;dbl&gt;,
+#   SE_1 &lt;dbl&gt;, PH_1 &lt;dbl&gt;, PH_2 &lt;dbl&gt;, Nat_1 &lt;dbl&gt;, Nat_2 &lt;dbl&gt;, Nat_3 &lt;dbl&gt;,
+#   Nat_4 &lt;dbl&gt;, Nat_5 &lt;dbl&gt;, Nat_6 &lt;dbl&gt;, SocID_1 &lt;dbl&gt;, SocID_2 &lt;dbl&gt;,
+#   SocID_3 &lt;dbl&gt;, SocID_4 &lt;dbl&gt;, Lon_1 &lt;dbl&gt;, Lon_2 &lt;dbl&gt;, Lon_3 &lt;dbl&gt;,
+#   Lon_4 &lt;dbl&gt;, Lon_5 &lt;dbl&gt;, Lon_6 &lt;dbl&gt;, SocSup_1 &lt;dbl&gt;, SocSup_2 &lt;dbl&gt;,
+#   SocSup_3 &lt;dbl&gt;, SocSup_4 &lt;dbl&gt;, SEff_1 &lt;dbl&gt;, SEff_2 &lt;dbl&gt;, SEff_3 &lt;dbl&gt;,
+#   SEff_4 &lt;dbl&gt;, SEff_5 &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>After that, check for any missing data. There are many ways to do it; the naniar package allows to visualize the missing data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install the naniar package in console and load to visualise missing data</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Code--&gt; install.packages("naniar)</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'naniar' was built under R version 4.5.2</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Visualise missing data</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vis_miss</span>(rawdata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="PSY6422_Miniproject_250197565_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Crosschecking this with the dataframe on the environment showed that the missing data is not the work of missing observations or information in the dataframe, but just empty rows at the bottom.</p>
+<p>While missing data here can be deleted using colSums(is.na() and drop_na(), it is not necessary here since the missing data is just a bunch of extra rows at the end of the dataframe that includes no data whatsoever. It is easier to simply avoid using it in the revised dataframe.</p>
 <ul>
-<li>In plain English, a simple statement of what question(s) your visualisation will attempt to address</li>
-</ul>
-<p><strong>Data Preparation</strong></p>
-<ul>
-<li><p>Steps taken to clean the data, exclude outliers, sanity check the data range and values, create summary statistics, grouped variables, etc.</p></li>
 <li><p>Show the first few rows of the processed data, if possible</p></li>
-<li><p>Showing the code which does this where relevant</p></li>
+<li><p>Showing the code which does this where relevantevant</p></li>
 </ul>
 <p><strong>Visualisation(s)</strong></p>
 <ul>

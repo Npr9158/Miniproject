@@ -14,17 +14,61 @@ The data was collected using an online survey from allotment and non-allotment o
 
 The questionnaire had items about demographics(age, gender, nationality), and questions regarding ownership and engagement in allotment activities, including time spent in nature and the types of outdoor activities. Along with that, mental health, self-esteem, physical health, connection to nature, social identity, loneliness, social support and self-efficacy were measured. A comprehensive guide of the items and scales used in the questionnaire can be found in the data paper on the Journal of Open Psychology Data website.
 
+(Explain why these variables were chosen in brief)
+
 ### Research Question 
 
--   In plain English, a simple statement of what question(s) your visualisation will attempt to address
+Using the data set from the above paper, this mini-project will attempt to visualize the relationship between mental health, time spent in nature, and connection to nature, and any potential differences in men and women. and attempt to answer the question — 'Does time spent in nature improve mental health?'
 
-**Data Preparation**
+### **Data Preparation**
 
--   Steps taken to clean the data, exclude outliers, sanity check the data range and values, create summary statistics, grouped variables, etc.
+The published data set has already been cleared of errors, outliers and required items have been reverse coded. The variables and column names are also compatible and easy to work with in R.
+
+Data preparation will start with importing the data.
+
+```{r}
+#Install tidyverse in console for data wrangling
+#Code--> install.packages("tidyverse")
+library(tidyverse)
+
+#Import dataset and create an object for easy management
+#Use correct pathway as required 
+#Only used csv file name here since it is already in the project folder
+rawdata <- read_csv("connection_to_nature_data.csv")
+
+
+```
+
+Check the first few rows of the raw data set.
+
+```{r}
+#To check the dataframe,including number of rows and columns
+glimpse(rawdata)
+
+#To see the first few rows of the dataframe as tibble use head()
+#More readable but only shows the first 6 rows 
+head(rawdata)
+
+```
+
+After that, check for any missing data. There are many ways to do it; the naniar package allows to visualize the missing data.
+
+```{r}
+#Install the naniar package in console and load to visualise missing data
+#Code--> install.packages("naniar)
+library(naniar)
+
+#Visualise missing data
+vis_miss(rawdata)
+```
+
+Crosschecking this with the dataframe on the environment showed that the missing data is not the work of missing observations or information in the dataframe, but just empty rows at the bottom.
+
+While missing data here can be deleted using colSums(is.na() and drop_na(), it is not necessary here since the missing data is just a bunch of extra rows at the end of the dataframe that includes no data whatsoever. It is easier to simply avoid using it in the revised dataframe.
 
 -   Show the first few rows of the processed data, if possible
 
--   Showing the code which does this where relevant
+-   Showing the code which does this where relevantevant
 
 **Visualisation(s)**
 
