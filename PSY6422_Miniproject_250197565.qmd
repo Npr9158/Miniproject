@@ -64,11 +64,13 @@ library(naniar)
 vis_miss(rawdata)
 ```
 
-Crosschecking this with the dataframe on the environment showed that the missing data is not the work of missing observations or information in the dataframe, but just empty rows at the bottom.
+**\<\<\<\<\<\<Crosschecking this with the dataframe on the environment showed that the missing data is not the work of missing observations or information in the dataframe, but just empty rows at the bottom.**
 
-While missing data here can be deleted using colSums(is.na() and drop_na(), it is not necessary here since most of the missing data is just a bunch of extra rows at the end of the dataframe that includes no data whatsoever. It is easier to simply avoid using it in the revised dataframe.
+**While missing data here can be deleted using colSums(is.na() and drop_na(), it is not necessary here since most of the missing data is just a bunch of extra rows at the end of the dataframe that includes no data whatsoever. It is easier to simply avoid using it in the revised dataframe, and use na.rm = TRUE for the required columns when tidying the data.** \>\>\>\>\>\>
 
-The next step is to tidy the data and create a new dataframe including only the required variables for the visualizations to answer the research question for this mini-project.
+**EDIT THIS PART**
+
+The next step is to tidy the data and create a new dataframe removing the missing data points and including only the required variables for the visualizations to answer the research question for this mini-project.
 
 This involves creating new columns for the mean values for the Mental Health columns, Connection to Nature columns, and Self-efficacy columns. The data in the gender column will also have to be changed to 'male' and 'female' from their coded values. The column named D_hours will be used but does not require any modifications.
 
@@ -76,10 +78,6 @@ This involves creating new columns for the mean values for the Mental Health col
 #Create the revised dataframe as an object
 revdata <- rawdata %>% 
   mutate( #create new columns with the mean values from the MH, Nat, SEff columns
-    #can use na.rm = TRUE to ignore any missing values
-    #not exactly required here since there are no missing values
-    #NOT SURE IF I SHOULD PUT THIS HERE 
-    #EDIT LATER
     mean_mh = rowMeans(across(.cols = starts_with("MH")), na.rm = TRUE),
     mean_nat = rowMeans(across(.cols = starts_with("Nat")), na.rm = TRUE),
     mean_seff = rowMeans(across(.cols = starts_with("SEff")), na.rm = TRUE),
@@ -88,7 +86,9 @@ revdata <- rawdata %>%
     Gender = factor(D_Gender, levels = c(1,2), labels = c("Men", "Women"))
     ) %>% 
   #Select only the required columns for the revised dataframe
-  select (c("Gender", "D_hours", "mean_mh", "mean_nat", "mean_seff")) 
+  select (c("Gender", "D_hours", "mean_mh", "mean_nat", "mean_seff")) %>%
+  #to ignore any rows with missing values
+  drop_na() 
 
 
 #New dataframe should be visible in environment now
@@ -147,6 +147,7 @@ revdata <- rawdata %>%
     ) %>% 
   #Select only the required columns for the revised dataframe
   select (c("Gender", "D_hours", "mean_mh", "mean_nat", "mean_seff")) %>% 
+  drop_na()%>% 
   filter(Gender == "Men" | Gender == "Women")
 #this last step will filter and show only "Men" and "Women in the revdata 
 
@@ -171,8 +172,8 @@ ggplotly(p_scatter)
 
 \>\>\>\>\>\>\>Animate the graph
 
-### Final Visualization
+### Final Visualization 
 
-**Summary**
+### Summary
 
 -   Brief thoughts on what you have learnt, what you might do next if you had more time / more data
