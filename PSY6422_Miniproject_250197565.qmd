@@ -41,7 +41,7 @@ rawdata <- read_csv("connection_to_nature_data.csv")
 
 ```
 
-Check the first few rows of the raw data set.
+Check the first few rows of the raw data set to make sure that the column names and values look good (this is not an issue in this data set since the authors have already cleaned the data for the most part). After that, check for any missing data.
 
 ```{r}
 #To check the dataframe,including number of rows and columns
@@ -51,17 +51,15 @@ glimpse(rawdata)
 #More readable but only shows the first 6 rows 
 head(rawdata)
 
-```
-
-After that, check for any missing data. There are many ways to do it; the naniar package allows to visualize the missing data.
-
-```{r}
+#To check for any missing data
+colSums(is.na(rawdata))
+#Another way do this : naniar to visualise the missing data
 #Install the naniar package in console and load to visualise missing data
 #Code--> install.packages("naniar)
 library(naniar)
-
 #Visualise missing data
 vis_miss(rawdata)
+
 ```
 
 **\<\<\<\<\<\<Crosschecking this with the dataframe on the environment showed that the missing data is not the work of missing observations or information in the dataframe, but just empty rows at the bottom.**
