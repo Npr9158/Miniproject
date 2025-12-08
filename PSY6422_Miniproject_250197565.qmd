@@ -111,7 +111,7 @@ library(plotly)
 
 #Create the scatterplot as an object 
 base_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
-  geom_point(alpha = 0.8) + #alpha value can be changed to adjust the opaqueness of the points
+  geom_point(alpha = 0.9) + #alpha value can be changed to adjust the opaqueness of the points
   geom_smooth(method = "lm", se = TRUE, color = "black", linewidth = 0.6)+
   #method draws a line to show correlation, se stands for standard deviation
   #lm is for a linear model to show a correlation
@@ -147,7 +147,7 @@ revdata <- revdata %>%
 
 #Running the scatterplot again
 base_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
-  geom_point(alpha = 0.8) + 
+  geom_point()+#removing alpha due to visibility issues with cividis yellow
   geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.6)+
   labs(x = "Mean Mental Health Score",
        y = "Hours spent in Nature per week",
@@ -162,12 +162,12 @@ ggplotly(base_scatter)
 
 ```
 
-The last few steps will be to create a custom, accessible theme for the scatterplot to make it more visually appealing. And as a final touch, gender will be shown in an animated graph.
+The last few steps will be to create a custom, accessible theme for the scatterplot to make it more visually appealing.
 
 ```{r}
 #Adjusted code for scatterplot without facet_wrap(~Gender)
 base_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
-  geom_point(alpha = 0.8) + 
+  geom_point() + 
   geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.6)+
   labs(x = "Mean Mental Health Score",
        y = "Hours spent in Nature per week",
@@ -190,7 +190,13 @@ theme_mod01 <- function(){
 
 #Add the custom theme to the scatterplot
 p_scatter <- base_scatter + theme_mod01()
+ggplotly(p_scatter)
 
+```
+
+And as a final touch, gender will be shown in an animated graph.
+
+```{r}
 #Add animation to the graph
 #Aim : show the two genders one at a time
 #Install necessary packages in console
@@ -214,10 +220,11 @@ final_animscatter <- animate(anim_scatter, renderer = gifski_renderer())
 #Save the animated graph as gif
 anim_save("miniproject_animated_graph.gif", animation = final_animscatter)
 
-
 ```
 
 ### Final Visualization 
+
+Here is the final visualization: an animated scatterplot.
 
 ### Summary
 
