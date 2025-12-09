@@ -4,23 +4,23 @@ format: html
 editor: visual
 ---
 
-## Introduction
-
-### Data Origins
+### Introduction and Data Origins
 
 The data set used for this mini-project was from a data paper titled [*'Data on Connection With the Natural Environment and Its Impact on Mental Health Among Allotment and Non-Allotment Owners'*](https://openpsychologydata.metajnl.com/articles/10.5334/jopd.122), by L. Haywood and J. Stiller(2024). The paper can be found on the [Journal of Open Psychology Data](https://openpsychologydata.metajnl.com/) website and the data set is available to download there.
 
+The paper cites previous research that has shown that mental and physical well-being are positively affected by the spending time out in nature, along with social identity and support.
+
 The data was collected using an online survey from allotment and non-allotment owners with the aim of observing the relationship between well-being and engagement with activities in nature.
 
-The questionnaire had items about demographics(age, gender, nationality), and questions regarding ownership and engagement in allotment activities, including time spent in nature and the types of outdoor activities. Along with that, mental health, self-esteem, physical health, connection to nature, social identity, loneliness, social support and self-efficacy were measured. A comprehensive guide of the items and scales used in the questionnaire can be found in the data paper on the Journal of Open Psychology Data website.
+The questionnaire had items about demographics(age, gender, nationality), and questions regarding ownership and engagement in allotment activities, including time spent in nature and the types of outdoor activities. Along with that, mental health, self-esteem, physical health, connection to nature, social identity, loneliness, social support and self-efficacy were measured.
 
-(Explain why these variables were chosen in brief)
-
-The full, detailed codebook can be downloaded from the data paper under the 'Additional Files' section. Alternatively, it can be accessed by the [repository link](https://data.mendeley.com/datasets/8y2h89z46s/3) mentioned in the same paper.
+A comprehensive guide of the items and scales used in the questionnaire can be found in the data paper on the Journal of Open Psychology Data website. The full, detailed codebook can be downloaded from the data paper under the 'Additional Files' section. Alternatively, it can be accessed by the [repository link](https://data.mendeley.com/datasets/8y2h89z46s/3) mentioned in the same paper.
 
 ### Research Question
 
-Using the data set from the above paper, this mini-project will attempt to visualize the relationship between mental health, time spent in nature, and connection to nature, and any potential differences in men and women. and attempt to answer the question — 'Does time spent in nature improve mental health?'
+Using the data set from the above paper, this mini-project will attempt to visualize the relationship between mental health, time spent in nature, and connection to nature, and any potential differences in men and women, and attempt to answer the question — 'Does time spent in nature improve mental health, and does the connection felt to nature influence this?'
+
+The hypothesis, taken from previous research, is that increased mental health scores in correlated to the amount of time spent outdoors. The Relatedness to Nature Scale Short Form asks questions related to a person's closeness to nature and how their identity is tied to it; it can be assumed that this will act as a moderating factor and that people with higher connection to nature scores will show a higher effect of time spent in nature on mental health.
 
 ### Data Preparation
 
@@ -53,12 +53,15 @@ head(rawdata)
 
 #To check for any missing data
 colSums(is.na(rawdata))
+
 #Another way do this : naniar to visualise the missing data
+#Personal note : Doing this to crosscheck since colSums showed 28 rows of missing data even though the data paper said the dataset was already cleaned
 #Install the naniar package in console and load to visualise missing data
 #Code--> install.packages("naniar)
 library(naniar)
 #Visualise missing data
 vis_miss(rawdata)
+
 
 ```
 
@@ -66,7 +69,7 @@ Crosschecking with the dataframe in the environment showed that most of the miss
 
 The next step is to tidy the data and create a new dataframe removing the missing data points and including only the required variables for the visualizations to answer the research question for this mini-project.
 
-This involves creating new columns for the mean values for the Mental Health columns, Connection to Nature columns, and Self-efficacy columns. While the individual scales used in the questionnaire calculate the scores by adding the self-reported scores across the items, this project will be calculating the mean scores instead as the individual scales have different score ranges. Using the mean scores for the scales will ensure uniformity, allowing for a more accurate visualization.
+This involves creating new columns for the mean values for the Mental Health columns, and Connection to Nature columns. While the individual scales used in the questionnaire calculate the scores by adding the self-reported scores across the items, this project will be calculating the mean scores instead as the individual scales have different score ranges. Using the mean scores for the scales will ensure uniformity, allowing for a more accurate visualization.
 
 The data in the gender column will also have to be changed to 'male' and 'female' from their coded values. The column named D_hours will be used but does not require any modifications.
 
@@ -143,7 +146,7 @@ To make the necessary changes, the previous data code for the revised data frame
 #Use filter to show only "Men" and "Women" in revdata
 revdata <- revdata %>% 
   filter(Gender == "Men" | Gender == "Women")
-#Can check the change in number of rows to make sure using glimpse(revdata) 
+#Optional:Can check the change in number of rows to make sure using nrow(revdata) 
 
 #Running the scatterplot again
 base_scatter <- ggplot(data = revdata,aes(x = mean_mh, y = D_hours, color = mean_nat))+
@@ -222,10 +225,14 @@ anim_save("miniproject_animated_graph.gif", animation = final_animscatter)
 
 ```
 
-### Final Visualization 
+### Final Visualization and Conclusions
 
 Here is the final visualization: an animated scatterplot.
 
-### Summary
+![](miniproject_animated_graph.gif){fig-align="center"}
 
--   Brief thoughts on what you have learnt, what you might do next if you had more time / more data
+From the scatterplot, inferences can be made that the data falls in line with previous research showing that exposure to nature/outdoors can improve well-being.
+
+It also answers the research question—more time spent in nature seems to show increased mental health scores, and connection to nature. The pattern of scores between men and women looks mostly similar as per the scatterplot. The connection to nature scores did not show as much of an effect as initially assumed to make a definite claim. Understandably, participants with lower nature connection scores seem to spend less time in nature, and this does not seem to influence their mental health scores.
+
+The dataset was not particularly large, with only a little over 500 participants; a larger data sample would have helped to come to a more accurate conclusion. A regression analysis would have provided accurate significance and correlation values and the degree to which any moderating factors effect the scores to make a detailed conclusion. If provided with more time, learning to perform a regression analysis on R studio would be the preferred next step.
