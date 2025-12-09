@@ -4,9 +4,9 @@
 
 This project is an mini-project assignment for the PSY6422 module.
 
-This mini-project analyses the relationship between time spent in nature and mental health, whether 'connection to nature' holds an influence over the effect, and potential gender differences.
+This mini-project analyses the relationship between [time spent in nature]{.underline} and [mental health]{.underline}, whether '[connection to nature]{.underline}' holds an influence over the effect, and potential [gender]{.underline} differences.
 
-Data was used from [Haywood and Stiller (2024)](https://openpsychologydata.metajnl.com/articles/10.5334/jopd.122) data paper, and the aforementioned variables were chosen to run the final analysis for this mini-project. Raw data and code book can be accessed through the paper.
+Data was used from [Haywood and Stiller (2024)](https://openpsychologydata.metajnl.com/articles/10.5334/jopd.122) data paper *'Data on Connection With the Natural Environment and Its Impact on Mental Health Among Allotment and Non-Allotment Owners'* , and the aforementioned variables were chosen to run the final analysis for this mini-project. Raw data and code book can be accessed through the paper.
 
 The final visualization is an animated scatterplot that shows that more time spent in nature was correlated to higher mental health scores.
 
@@ -26,13 +26,13 @@ The analysis is written in R using Quarto to produce a fully reproducible, self-
 
 ### Repository Structure
 
--   data/: Contains raw data used for analysis (connection_to_nature_data.csv)
+-   **connection_to_nature_data.csv** : Contains raw data used for analysis
 
--   PSY6422_Miniproject_250197565.qmd : Main Quarto document containing analysis, narrative and visualization
+-   **PSY6422_Miniproject_250197565.qmd** : Main Quarto document containing analysis, narrative and visualization
 
--   PSY6422_Miniproject_250197565.html : Rendered output file (viewable in browser)
+-   **PSY6422_Miniproject_250197565.html** : Rendered output file (viewable in browser)
 
--   miniproject_animated_graph.gif : Final visualization as an animated scatterplot
+-   **miniproject_animated_graph.gif** : Final visualization as an animated scatterplot
 
 ### Prerequisites
 
