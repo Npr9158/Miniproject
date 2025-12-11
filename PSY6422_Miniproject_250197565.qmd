@@ -4,25 +4,25 @@ format: html
 editor: visual
 ---
 
-### Introduction and Data Origins
+### [Introduction and Data Origins]{.underline}
 
 The data set used for this mini-project was from a data paper titled [*'Data on Connection With the Natural Environment and Its Impact on Mental Health Among Allotment and Non-Allotment Owners'*](https://openpsychologydata.metajnl.com/articles/10.5334/jopd.122), by L. Haywood and J. Stiller(2024). The paper can be found on the [Journal of Open Psychology Data](https://openpsychologydata.metajnl.com/) website and the data set is available to download there.
 
-The paper cites previous research that has shown that mental and physical well-being are positively affected by the spending time out in nature, along with social identity and support.
+The paper cites previous research that has shown that mental and physical well-being are positively affected by the spending time out in nature, along with social identity and social support.
 
-The data was collected using an online survey from allotment and non-allotment owners with the aim of observing the relationship between well-being and engagement with activities in nature.
-
-The questionnaire had items about demographics(age, gender, nationality), and questions regarding ownership and engagement in allotment activities, including time spent in nature and the types of outdoor activities. Along with that, mental health, self-esteem, physical health, connection to nature, social identity, loneliness, social support and self-efficacy were measured.
+The data was collected using an online survey from allotment and non-allotment owners with the aim of observing the relationship between well-being and engagement with activities in nature. The questionnaire had items about demographics(age, gender, nationality), and questions regarding ownership and engagement in allotment activities, including time spent in nature and the types of outdoor activities. Along with that, mental health, self-esteem, physical health, connection to nature, social identity, loneliness, social support and self-efficacy were measured.
 
 A comprehensive guide of the items and scales used in the questionnaire can be found in the data paper on the Journal of Open Psychology Data website. The full, detailed codebook can be downloaded from the data paper under the 'Additional Files' section. Alternatively, it can be accessed by the [repository link](https://data.mendeley.com/datasets/8y2h89z46s/3) mentioned in the same paper.
 
 ### Research Question
 
-Using the data set from the above paper, this mini-project will attempt to visualize the relationship between mental health, time spent in nature, and connection to nature, and any potential differences in men and women, and attempt to answer the question — 'Does time spent in nature improve mental health, and does the connection felt to nature influence this?'
+Using the data set from the above paper, this mini-project will attempt to visualize the relationship between mental health, time spent in nature, and connection to nature, and any potential differences in men and women, and attempt to answer the question — [*'Does more time spent in nature improve mental health, and is this influenced by connection felt to nature and gender?'*]{.underline}
 
 The hypothesis, taken from previous research, is that increased mental health scores in correlated to the amount of time spent outdoors. The Relatedness to Nature Scale Short Form asks questions related to a person's closeness to nature and how their identity is tied to it; it can be assumed that this will act as a moderating factor and that people with higher connection to nature scores will show a higher effect of time spent in nature on mental health.
 
-### Data Preparation
+The variables focused on for this analysis will be hours spent out in nature per week, mental health score, connection to nature score, and gender.
+
+### [Data Preparation]{.underline}
 
 The published data set has already been cleared of errors, outliers and required items have been reverse coded. The variables and column names are also compatible and easy to work with in R.
 
@@ -98,7 +98,7 @@ head(revdata)
   
 ```
 
-### Visualizations
+### [Visualizations]{.underline}
 
 The aim is to create a scatter plot measuring the average mental health scores and its relationship with the hours spent in nature per week, along with the average connection to nature scores and the differences between genders.
 
@@ -225,7 +225,7 @@ anim_save("miniproject_animated_graph.gif", animation = final_animscatter)
 
 ```
 
-### Final Visualization and Conclusions
+### [Final Visualization and Conclusions]{.underline}
 
 Here is the final visualization: an animated scatterplot.
 
@@ -235,4 +235,8 @@ From the scatterplot, inferences can be made that the data falls in line with pr
 
 It also answers the research question—more time spent in nature seems to show increased mental health scores, and connection to nature. The pattern of scores between men and women looks mostly similar as per the scatterplot. The connection to nature scores did not show as much of an effect as initially assumed to make a definite claim. Understandably, participants with lower nature connection scores seem to spend less time in nature, and this does not seem to influence their mental health scores.
 
-The dataset was not particularly large, with only a little over 500 participants; a larger data sample would have helped to come to a more accurate conclusion. A regression analysis would have provided accurate significance and correlation values and the degree to which any moderating factors effect the scores to make a detailed conclusion. If provided with more time, learning to perform a regression analysis on R studio would be the preferred next step.
+Mental Health is a complex topic to explain with just connection to nature and time spent outside in nature in relation. Though the information on self-esteem, self-efficacy, social support and more were included in the data paper were not used in this analysis, they should be considered as important variables to look into to further explain their impact on mental health.
+
+Socio-economic status(SES) could be a confounding variable that was not considered in this data paper. The data paper included the types of activities as a variable too, but even so, SES was not considered as a variable. Including SES could explain the relationship between time spent in nature and mental health scores in another way.
+
+The dataset was collected online on a voluntary basis and it is possible that most participants were already interested in the topic. A larger data sample would have helped to come to a more accurate conclusion. A regression analysis would have provided accurate significance and correlation values and the degree to which any moderating factors effect the scores to make a detailed conclusion. If provided with more time, learning to perform a regression analysis on R studio would be the preferred next step.
