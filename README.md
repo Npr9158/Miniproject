@@ -10,11 +10,9 @@ Data was used from [Haywood and Stiller (2024)](https://openpsychologydata.metaj
 
 The final visualization is an animated scatterplot that shows that more time spent in nature was correlated to higher mental health scores.
 
-![Final visualization](miniproject_animated_graph.gif)
-
 The analysis is written in R using Quarto to produce a fully reproducible, self-contained HTML report.
 
-**Key features**
+**Key features:**
 
 -   Data cleaning and wrangling using tidyverse and naniar packages.
 
